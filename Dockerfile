@@ -12,7 +12,7 @@ RUN cabal install --jobs  --enable-executable-stripping --enable-optimization=2 
 RUN upx -9 /root/.cabal/bin/shellcheck
 
 FROM alpine:3.8
-RUN apk --no-cache add libffi=3.2.1-r4 libgmpxx=6.1.2-r1
+RUN apk --no-cache add libffi=3.2.1-r4 libgmpxx=6.1.2-r1 parallel=20180622-r0
 COPY --from=builder /root/.cabal/bin/shellcheck /usr/local/bin/shellcheck
 
 # Build arguments
