@@ -1,5 +1,4 @@
-FROM alpine:3.8 as builder
-
+FROM alpine:3.8 as build
 
 RUN apk --no-cache add curl=7.61.1-r1 cabal=2.2.0.0-r0 ghc=8.4.3-r0 build-base=0.5-r1 upx=3.94-r0
 RUN mkdir -p /app/shellcheck
@@ -13,7 +12,7 @@ RUN upx -9 /root/.cabal/bin/shellcheck
 
 FROM alpine:3.8
 RUN apk --no-cache add libffi=3.2.1-r4 libgmpxx=6.1.2-r1 parallel=20180622-r0
-COPY --from=builder /root/.cabal/bin/shellcheck /usr/local/bin/shellcheck
+COPY --from=build /root/.cabal/bin/shellcheck /usr/local/bin/shellcheck
 
 # Build arguments
 ARG BUILD_DATE
