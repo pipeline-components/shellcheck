@@ -14,6 +14,7 @@ FROM alpine:3.8
 RUN apk --no-cache add libffi=3.2.1-r4 libgmpxx=6.1.2-r1 parallel=20180622-r0
 COPY --from=build /root/.cabal/bin/shellcheck /usr/local/bin/shellcheck
 
+WORKDIR /code/
 # Build arguments
 ARG BUILD_DATE
 ARG BUILD_REF
