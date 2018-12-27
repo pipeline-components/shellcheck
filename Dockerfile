@@ -3,10 +3,9 @@ FROM alpine:3.8 as build
 RUN apk --no-cache add curl=7.61.1-r1 cabal=2.2.0.0-r0 ghc=8.4.3-r0 build-base=0.5-r1 upx=3.94-r0
 RUN mkdir -p /app/shellcheck
 WORKDIR /app/shellcheck
-RUN curl --location  -o ../shellcheck.tar.gz https://github.com/koalaman/shellcheck/archive/v0.6.0.tar.gz
-RUN tar --strip=1 -zxvf ../shellcheck.tar.gz
+
 RUN cabal update 
-RUN cabal install --jobs  --enable-executable-stripping --enable-optimization=2 --enable-shared --enable-split-sections  --disable-debug-info 
+RUN cabal install --jobs  --enable-executable-stripping --enable-optimization=2 --enable-shared --enable-split-sections  --disable-debug-info  ShellCheck-0.6.0
 
 RUN upx -9 /root/.cabal/bin/shellcheck
 
