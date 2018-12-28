@@ -23,7 +23,26 @@ shellcheck:
   stage: linting
   image: pipelinecomponents/shellcheck:latest
   script:
-    - shellcheck .
+    - |
+      find . -name .git -type d -prune -o -type f -name \*.sh -print0 |
+      xargs -0 -r -n1 shellcheck
+```
+
+Or a bit more complex:
+
+```yaml
+shellcheck:
+  stage: linting
+  image: pipelinecomponents/shellcheck:latest
+  script:
+    # anything ending on .sh, should be shell script
+    - |
+      find . -name .git -type d -prune -o -type f  -name \*.sh -print0 |
+      xargs -0 -P $(nproc) -r -n1 shellcheck
+    # magic, any file with a valid shebang should be scanned aswell
+    - |
+      find . -name .git -type d -prune -o -type f  -regex '.*/[^.]*$'   -print0 |
+      xargs -0 -P $(nproc) -r -n1 sh -c 'FILE="$0"; if head -n1 "$FILE" |grep -q "^#\\! \?/.\+\(ba|d|k\)\?sh" ; then shellcheck "$FILE" ; else /bin/true ; fi '
 ```
 
 ## Versioning
