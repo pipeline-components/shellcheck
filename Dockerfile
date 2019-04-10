@@ -1,4 +1,4 @@
-FROM alpine:3.9.2 as build
+FROM alpine:3.9.3 as build
 
 RUN apk --no-cache add curl=7.64.0-r1 cabal=2.2.0.0-r0 ghc=8.4.3-r0 build-base=0.5-r1 upx=3.95-r1
 RUN mkdir -p /app/shellcheck
@@ -9,7 +9,7 @@ RUN cabal install --jobs  --enable-executable-stripping --enable-optimization=2 
 
 RUN upx -9 /root/.cabal/bin/shellcheck
 
-FROM alpine:3.9.2
+FROM alpine:3.9.3
 RUN apk --no-cache add libffi=3.2.1-r6 libgmpxx=6.1.2-r1 parallel=20180622-r0
 COPY --from=build /root/.cabal/bin/shellcheck /usr/local/bin/shellcheck
 
