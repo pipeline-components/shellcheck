@@ -4,12 +4,18 @@ RUN apk --no-cache add curl=7.65.1-r0 cabal=2.4.1.0-r0 ghc=8.4.3-r0 build-base=0
 RUN mkdir -p /app/shellcheck
 WORKDIR /app/shellcheck
 
-RUN cabal update 
+RUN cabal update
 RUN cabal install --jobs  --enable-executable-stripping --enable-optimization=2 --enable-shared --enable-split-sections  --disable-debug-info  ShellCheck-0.6.0
 
 RUN upx -9 /root/.cabal/bin/shellcheck
 
+FROM pipelinecomponents/base-entrypoint:0.1.0 as entrypoint
+
 FROM alpine:3.10.2
+COPY --from=entrypoint /entrypoint.sh /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
+ENV DEFAULTCMD shellcheck
+
 RUN apk --no-cache add libffi=3.2.1-r6 libgmpxx=6.1.2-r1 parallel=20190522-r0
 COPY --from=build /root/.cabal/bin/shellcheck /usr/local/bin/shellcheck
 
