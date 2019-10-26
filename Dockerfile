@@ -1,6 +1,6 @@
 FROM alpine:3.10.3 as build
 
-RUN apk --no-cache add curl=7.65.1-r0 cabal=2.4.1.0-r0 ghc=8.4.3-r0 build-base=0.5-r1 upx=3.95-r2
+RUN apk --no-cache add curl=7.66.0-r0 cabal=2.4.1.0-r0 ghc=8.4.3-r0 build-base=0.5-r1 upx=3.95-r2
 RUN mkdir -p /app/shellcheck
 WORKDIR /app/shellcheck
 
