@@ -1,5 +1,5 @@
 ---
-name: 'shellcheck'
+name: 'pipeline-components-shellcheck'
 description: 'shellcheck by Pipeline Components'
 author: 'Robbert Müller <spam.me@grols.ch>'
 branding:
