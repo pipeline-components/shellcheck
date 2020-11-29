@@ -1,7 +1,7 @@
 FROM alpine:3.12.1 as build
 
 RUN apk --no-cache add \
-    curl=7.69.1-r0 \
+    curl=7.69.1-r1 \
     cabal=3.2.0.0-r0 \
     ghc=8.8.3-r0 \
     build-base=0.5-r2 \
