@@ -1,7 +1,7 @@
-FROM alpine:3.12.1 as build
+FROM alpine:3.12.3 as build
 
 RUN apk --no-cache add \
-    curl=7.69.1-r1 \
+    curl=7.69.1-r3 \
     cabal=3.2.0.0-r0 \
     ghc=8.8.3-r0 \
     build-base=0.5-r2 \
@@ -17,7 +17,7 @@ RUN upx -9 /root/.cabal/bin/shellcheck
 
 FROM pipelinecomponents/base-entrypoint:0.2.0 as entrypoint
 
-FROM alpine:3.12.1
+FROM alpine:3.12.3
 COPY --from=entrypoint /entrypoint.sh /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 ENV DEFAULTCMD shellcheck
