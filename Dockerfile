@@ -1,9 +1,9 @@
-FROM alpine:3.12.3 as build
+FROM alpine:3.13.0 as build
 
 RUN apk --no-cache add \
-    curl=7.69.1-r3 \
+    curl=7.74.0-r0 \
     cabal=3.2.0.0-r0 \
-    ghc=8.8.3-r0 \
+    ghc=8.8.4-r0 \
     build-base=0.5-r2 \
     upx=3.96-r0
 RUN mkdir -p /app/shellcheck
@@ -17,12 +17,12 @@ RUN upx -9 /root/.cabal/bin/shellcheck
 
 FROM pipelinecomponents/base-entrypoint:0.3.0 as entrypoint
 
-FROM alpine:3.12.3
+FROM alpine:3.13.0
 COPY --from=entrypoint /entrypoint.sh /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 ENV DEFAULTCMD shellcheck
 
-RUN apk --no-cache add libffi=3.3-r2 libgmpxx=6.2.0-r0 parallel=20200522-r0
+RUN apk --no-cache add libffi=3.3-r2 libgmpxx=6.2.1-r0 parallel=20201222-r0
 COPY --from=build /root/.cabal/bin/shellcheck /usr/local/bin/shellcheck
 
 WORKDIR /code/
