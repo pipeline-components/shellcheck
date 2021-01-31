@@ -15,7 +15,7 @@ RUN cabal install --jobs  --enable-executable-stripping --enable-optimization=2 
 RUN cp "$(readlink -f /root/.cabal/bin/shellcheck)" /root/.cabal/bin/shellcheck
 RUN upx -9 /root/.cabal/bin/shellcheck
 
-FROM pipelinecomponents/base-entrypoint:0.3.0 as entrypoint
+FROM pipelinecomponents/base-entrypoint:0.4.0 as entrypoint
 
 FROM alpine:3.13.0
 COPY --from=entrypoint /entrypoint.sh /entrypoint.sh
