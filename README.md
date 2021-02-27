@@ -21,7 +21,7 @@ The image is for running shellcheck. The image is based on alpine:3.8
 ```yaml
 shellcheck:
   stage: linting
-  image: pipelinecomponents/shellcheck:latest
+  image: registry.gitlab.com/pipeline-components/shellcheck:latest
   script:
     - |
       find . -name .git -type d -prune -o -type f -name \*.sh -print0 |
@@ -33,7 +33,7 @@ Or a bit more complex:
 ```yaml
 shellcheck:
   stage: linting
-  image: pipelinecomponents/shellcheck:latest
+  image: registry.gitlab.com/pipeline-components/shellcheck:latest
   script:
     # anything ending on .sh, should be shell script
     - |
