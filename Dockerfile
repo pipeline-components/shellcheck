@@ -6,6 +6,8 @@ RUN apk --no-cache add \
     ghc=8.8.4-r0 \
     build-base=0.5-r2 \
     upx=3.96-r0
+
+COPY app /app/
 RUN mkdir -p /app/shellcheck
 WORKDIR /app/shellcheck
 
@@ -21,6 +23,8 @@ FROM alpine:3.13.2
 COPY --from=entrypoint /entrypoint.sh /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 ENV DEFAULTCMD shellcheck
+
+COPY app /app/
 
 RUN apk --no-cache add libffi=3.3-r2 libgmpxx=6.2.1-r0 parallel=20201222-r0
 COPY --from=build /root/.cabal/bin/shellcheck /usr/local/bin/shellcheck
