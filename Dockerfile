@@ -1,11 +1,12 @@
 FROM alpine:3.13.2 as build
 
+# hadolint ignore=DL3018
 RUN apk --no-cache add \
-    curl=7.74.0-r0 \
+    curl \
     cabal=3.2.0.0-r0 \
     ghc=8.8.4-r0 \
     build-base=0.5-r2 \
-    upx=3.96-r0
+    upx
 
 COPY app /app/
 RUN mkdir -p /app/shellcheck
