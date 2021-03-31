@@ -1,4 +1,4 @@
-FROM alpine:3.13.3 as build
+FROM alpine:3.13.4 as build
 
 # hadolint ignore=DL3018
 RUN apk --no-cache add \
@@ -20,7 +20,7 @@ RUN upx -9 /root/.cabal/bin/shellcheck
 
 FROM pipelinecomponents/base-entrypoint:0.4.0 as entrypoint
 
-FROM alpine:3.13.3
+FROM alpine:3.13.4
 COPY --from=entrypoint /entrypoint.sh /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 ENV DEFAULTCMD shellcheck
