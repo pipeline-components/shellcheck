@@ -1,6 +1,6 @@
 ---
 variables:
-  BUILD_ARM64: 1
+  BUILD_ARM64: "false"
 
 include:
   - project: 'pipeline-components/org/config'
