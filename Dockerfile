@@ -12,11 +12,11 @@ COPY app /app/
 RUN mkdir -p /app/shellcheck
 WORKDIR /app/shellcheck
 
-RUN cabal update
-RUN cabal install --jobs  --enable-executable-stripping --enable-optimization=2 --enable-shared --enable-split-sections  --disable-debug-info  ShellCheck-0.7.1
+RUN cabal update && \
+    cabal install --jobs  --enable-executable-stripping --enable-optimization=2 --enable-shared --enable-split-sections  --disable-debug-info  ShellCheck-0.7.1
 
-RUN cp "$(readlink -f /root/.cabal/bin/shellcheck)" /root/.cabal/bin/shellcheck
-RUN upx -9 /root/.cabal/bin/shellcheck
+RUN cp "$(readlink -f /root/.cabal/bin/shellcheck)" /root/.cabal/bin/shellcheck && \
+    upx -9 /root/.cabal/bin/shellcheck
 
 FROM pipelinecomponents/base-entrypoint:0.5.0 as entrypoint
 
