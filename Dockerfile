@@ -3,9 +3,10 @@ FROM alpine:3.15.0 as build
 # hadolint ignore=DL3018
 RUN apk --no-cache add \
     curl \
-    cabal=3.2.0.0-r0 \
-    ghc=8.8.4-r0 \
-    build-base=0.5-r2 \
+    cabal=3.6.2.0-r1 \
+    ghc=9.0.1-r1 \
+    build-base \
+    libffi-dev \
     upx
 
 COPY app /app/
@@ -27,7 +28,8 @@ ENV DEFAULTCMD shellcheck
 
 COPY app /app/
 
-RUN apk --no-cache add libffi=3.3-r2 libgmpxx=6.2.1-r0 parallel=20201222-r0
+# hadolint ignore=DL3018
+RUN apk --no-cache add libffi libgmpxx parallel
 COPY --from=build /root/.cabal/bin/shellcheck /usr/local/bin/shellcheck
 
 WORKDIR /code/
