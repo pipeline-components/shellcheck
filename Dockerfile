@@ -29,7 +29,7 @@ ENV DEFAULTCMD shellcheck
 COPY app /app/
 
 # hadolint ignore=DL3018
-RUN apk --no-cache add libffi libgmpxx parallel
+RUN apk --no-cache add libffi libgmpxx parallel bash
 COPY --from=build /root/.cabal/bin/shellcheck /usr/local/bin/shellcheck
 
 WORKDIR /code/
