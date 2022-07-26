@@ -1,9 +1,9 @@
-FROM alpine:3.15.5 as build
+FROM alpine:3.16.1 as build
 
 # hadolint ignore=DL3018
 RUN apk --no-cache add \
     curl \
-    cabal=3.6.2.0-r1 \
+    cabal=3.6.2.0-r2 \
     ghc=9.0.1-r1 \
     build-base \
     libffi-dev \
@@ -21,7 +21,7 @@ RUN cp "$(readlink -f /root/.cabal/bin/shellcheck)" /root/.cabal/bin/shellcheck 
 
 FROM pipelinecomponents/base-entrypoint:0.5.0 as entrypoint
 
-FROM alpine:3.15.5
+FROM alpine:3.16.1
 COPY --from=entrypoint /entrypoint.sh /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 ENV DEFAULTCMD shellcheck
