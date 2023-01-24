@@ -3,8 +3,8 @@ FROM alpine:3.17.1 as build
 # hadolint ignore=DL3018
 RUN apk --no-cache add \
     curl \
-    cabal=3.6.2.0-r2 \
-    ghc=9.0.1-r1 \
+    cabal=3.8.1.0-r2\
+    ghc=9.0.2-r1 \
     build-base \
     libffi-dev \
     upx
