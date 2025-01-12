@@ -1,10 +1,10 @@
-FROM alpine:3.21.2 as build
+FROM alpine:3.21.2 AS build
 
 # hadolint ignore=DL3018
 RUN apk --no-cache add \
     curl \
-    cabal=3.8.1.0-r2\
-    ghc=9.0.2-r1 \
+    cabal \
+    ghc \
     build-base \
     libffi-dev \
     upx
@@ -13,11 +13,12 @@ COPY app /app/
 RUN mkdir -p /app/shellcheck
 WORKDIR /app/shellcheck
 
-RUN cabal update && \
-    cabal install --jobs  --enable-executable-stripping --enable-optimization=2 --enable-shared --enable-split-sections  --disable-debug-info  ShellCheck-0.8.0
+RUN \
+    cabal update && \
+    cabal install --jobs  --enable-executable-stripping --enable-optimization=2 --enable-shared --enable-split-sections  --disable-debug-info  ShellCheck-0.10.0
 
-RUN cp "$(readlink -f /root/.cabal/bin/shellcheck)" /root/.cabal/bin/shellcheck && \
-    upx -9 /root/.cabal/bin/shellcheck
+RUN cp "$(readlink -f /root/.local/bin/shellcheck)" /root/.local/bin/shellcheck && \
+    upx -9 /root/.local/bin/shellcheck
 
 FROM pipelinecomponents/base-entrypoint:0.5.0 as entrypoint
 
@@ -30,7 +31,7 @@ COPY app /app/
 
 # hadolint ignore=DL3018
 RUN apk --no-cache add libffi libgmpxx parallel bash
-COPY --from=build /root/.cabal/bin/shellcheck /usr/local/bin/shellcheck
+COPY --from=build /root/.local/bin/shellcheck /usr/local/bin/shellcheck
 
 WORKDIR /code/
 # Build arguments
