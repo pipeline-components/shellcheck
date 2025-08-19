@@ -20,12 +20,12 @@ RUN \
 RUN cp "$(readlink -f /root/.local/bin/shellcheck)" /root/.local/bin/shellcheck && \
     upx -9 /root/.local/bin/shellcheck
 
-FROM pipelinecomponents/base-entrypoint:0.5.0 as entrypoint
+FROM pipelinecomponents/base-entrypoint:0.5.0 AS entrypoint
 
 FROM alpine:3.22.1
 COPY --from=entrypoint /entrypoint.sh /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
-ENV DEFAULTCMD shellcheck
+ENV DEFAULTCMD=shellcheck
 
 COPY app /app/
 
