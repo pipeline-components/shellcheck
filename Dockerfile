@@ -1,3 +1,11 @@
+FROM golang:1.24-alpine3.22 AS go-build
+
+WORKDIR /go/src/
+# hadolint ignore=DL3018
+RUN apk --no-cache add git upx \
+    && go install 'gitlab.com/pipeline-components/org/gitlab-reportinator/cmd/gitlab-reportinator@v0.5.0' \
+    && upx -9 /go/bin/gitlab-reportinator
+
 FROM alpine:3.22.1 AS build
 
 # hadolint ignore=DL3018
@@ -32,6 +40,7 @@ COPY app /app/
 # hadolint ignore=DL3018
 RUN apk --no-cache add libffi libgmpxx parallel bash
 COPY --from=build /root/.local/bin/shellcheck /usr/local/bin/shellcheck
+COPY --from=go-build /go/bin/gitlab-reportinator /usr/local/bin/convert_report
 
 WORKDIR /code/
 # Build arguments
