@@ -3,7 +3,7 @@ FROM golang:1.24-alpine3.22 AS go-build
 WORKDIR /go/src/
 # hadolint ignore=DL3018
 RUN apk --no-cache add git upx \
-    && go install 'gitlab.com/pipeline-components/org/gitlab-reportinator/cmd/gitlab-reportinator@v0.5.0' \
+    && go install 'gitlab.com/pipeline-components/org/gitlab-reportinator/cmd/gitlab-reportinator@v0.6.0' \
     && upx -9 /go/bin/gitlab-reportinator
 
 FROM alpine:3.22.1 AS build
