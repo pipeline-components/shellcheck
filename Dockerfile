@@ -1,3 +1,11 @@
+FROM golang:1.24-alpine3.22 AS go-build
+
+WORKDIR /go/src/
+# hadolint ignore=DL3018
+RUN apk --no-cache add git upx \
+    && go install 'gitlab.com/pipeline-components/org/gitlab-reportinator/cmd/gitlab-reportinator@v0.6.0' \
+    && upx -9 /go/bin/gitlab-reportinator
+
 FROM alpine:3.22.1 AS build
 
 # hadolint ignore=DL3018
@@ -20,18 +28,19 @@ RUN \
 RUN cp "$(readlink -f /root/.local/bin/shellcheck)" /root/.local/bin/shellcheck && \
     upx -9 /root/.local/bin/shellcheck
 
-FROM pipelinecomponents/base-entrypoint:0.5.0 as entrypoint
+FROM pipelinecomponents/base-entrypoint:0.5.0 AS entrypoint
 
 FROM alpine:3.22.1
 COPY --from=entrypoint /entrypoint.sh /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
-ENV DEFAULTCMD shellcheck
+ENV DEFAULTCMD=shellcheck
 
 COPY app /app/
 
 # hadolint ignore=DL3018
 RUN apk --no-cache add libffi libgmpxx parallel bash
 COPY --from=build /root/.local/bin/shellcheck /usr/local/bin/shellcheck
+COPY --from=go-build /go/bin/gitlab-reportinator /usr/local/bin/convert_report
 
 WORKDIR /code/
 # Build arguments
