@@ -6,7 +6,7 @@ RUN apk --no-cache add git upx \
     && go install 'gitlab.com/pipeline-components/org/gitlab-reportinator/cmd/gitlab-reportinator@v0.6.0' \
     && upx -9 /go/bin/gitlab-reportinator
 
-FROM alpine:3.22.2 AS build
+FROM alpine:3.23.0 AS build
 
 # hadolint ignore=DL3018
 RUN apk --no-cache add \
@@ -30,7 +30,7 @@ RUN cp "$(readlink -f /root/.local/bin/shellcheck)" /root/.local/bin/shellcheck 
 
 FROM pipelinecomponents/base-entrypoint:0.5.0 AS entrypoint
 
-FROM alpine:3.22.2
+FROM alpine:3.23.0
 COPY --from=entrypoint /entrypoint.sh /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 ENV DEFAULTCMD=shellcheck
